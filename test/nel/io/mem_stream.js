@@ -19,16 +19,12 @@ describe("nel", function () {
                     .then(done, done);
             });
 
-            it("should exist", function () {
-                expect(CMemStream).to.be.ok;
-            });
-
-            describe("#write_UINT8()", function () {
+            describe("#serialize_UINT8()", function () {
                 context("when not called with a number", function () {
                     it("should throw", function () {
                         var stream = new CMemStream();
                         expect(() => {
-                            stream.write_UINT8("asdf");
+                            stream.serialize_UINT8("asdf");
                         }).to.throw(Error);
                     });
                 });
@@ -36,10 +32,33 @@ describe("nel", function () {
                 it("should add 1 byte to the stream", function () {
                     var stream = new CMemStream();
 
-                    stream.write_UINT8(-1);
-                    stream.write_UINT8(128);
+                    stream.serialize_UINT8({ value: -1}, "value");
+                    stream.serialize_UINT8({ value: 128}, "value");
 
                     expect(stream.toString()).to.equal(" ff 80>");
+                });
+            });
+
+            describe("#serialize()", function () {
+                it("should write given object", function () {
+                    var stream = new CMemStream();
+                    var serializable = {
+                        version: 1,
+
+                        value: -1,
+
+                        serialize: function( stream ) {
+                            stream.serialize_UINT8( this, "version" );
+
+                            // if reading and version does not match throw error
+
+                            stream.serialize_UINT8( this, "value" );
+                        }
+                    };
+
+                    stream.serialize( serializable );
+
+                    expect(stream.toString()).to.equal(" 01 ff>");
                 });
             });
         });

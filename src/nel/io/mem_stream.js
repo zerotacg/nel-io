@@ -7,7 +7,12 @@ export default class CMemStream {
         this.length = 0;
     }
 
-    write_UINT8( value ) {
+    serialize( serializable ) {
+        serializable.serialize( this );
+    }
+
+    serialize_UINT8( object, property ) {
+        var value = object[property];
         console.assert(typeof(value) === "number");
 
         this.dataview.setUint8(this.pos, value);
@@ -21,7 +26,7 @@ export default class CMemStream {
             var prefix = index === this.pos ? "|" : " ";
             var value = byte.toString(16);
             if ( byte <= 0xf ) {
-                value += "0";
+                prefix += "0";
             }
 
             return string + prefix + value;

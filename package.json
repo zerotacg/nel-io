@@ -2,7 +2,7 @@
   "name": "nel-io",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/nel/io",
   "scripts": {
     "test": "mocha"
   },
@@ -10,8 +10,22 @@
     "type": "git",
     "url": "git+https://github.com/zerotacg/nel-io.git"
   },
-  "author": "Tobias Peters <tobias.peters@kreativeffekt.at>",
-  "license": "MIT",
+  "author": {
+    "name": "Tobias Peters",
+    "email": "tobias.peters@kreativeffekt.at"
+  },
+  "contributors": [
+    {
+      "name": "Tobias Peters",
+      "email": "tobias.peters@kreativeffekt.at"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/zerotacg/opensteer.js/blob/master/LICENSE"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/zerotacg/nel-io/issues"
   },

@@ -1,0 +1,19 @@
+{
+  "name": "nel-io",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zerotacg/nel-io.git"
+  },
+  "author": "Tobias Peters <tobias.peters@kreativeffekt.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zerotacg/nel-io/issues"
+  },
+  "homepage": "https://github.com/zerotacg/nel-io#readme"
+}

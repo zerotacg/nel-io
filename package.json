@@ -1,10 +1,13 @@
 {
   "name": "nel-io",
   "version": "0.0.0",
-  "description": "",
+  "description": "NeL io library",
   "main": "src/nel/io",
   "scripts": {
-    "test": "mocha"
+    "lint": "jshint src/nel/**/*.js test/nel/**/*.js",
+    "pretest": "npm run lint",
+    "test": "mocha --recursive --compilers js:babel/register",
+    "postinstall": "jspm install"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,7 @@
       "email": "tobias.peters@kreativeffekt.at"
     }
   ],
+  "license": "MIT",
   "licenses": [
     {
       "type": "MIT",
@@ -29,5 +33,19 @@
   "bugs": {
     "url": "https://github.com/zerotacg/nel-io/issues"
   },
-  "homepage": "https://github.com/zerotacg/nel-io#readme"
+  "homepage": "https://github.com/zerotacg/nel-io#readme",
+  "devDependencies": {
+    "babel": "^5.8.24",
+    "chai": "^3.4.1",
+    "jshint": "^2.8.0",
+    "jspm": "^0.16.15",
+    "mocha": "^2.3.4"
+  },
+  "jspm": {
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
 }

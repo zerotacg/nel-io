@@ -1,3 +1,6 @@
 ### JetBrains template
 ## Directory-based project format:
 .idea/
+
+node_modules/
+jspm_packages/

@@ -22,6 +22,26 @@ describe("nel", function () {
             it("should exist", function () {
                 expect(CMemStream).to.be.ok;
             });
+
+            describe("#write_UINT8()", function () {
+                context("when not called with a number", function () {
+                    it("should throw", function () {
+                        var stream = new CMemStream();
+                        expect(() => {
+                            stream.write_UINT8("asdf");
+                        }).to.throw(Error);
+                    });
+                });
+
+                it("should add 1 byte to the stream", function () {
+                    var stream = new CMemStream();
+
+                    stream.write_UINT8(-1);
+                    stream.write_UINT8(128);
+
+                    expect(stream.toString()).to.equal(" ff 80>");
+                });
+            });
         });
     });
 });

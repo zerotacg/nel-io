@@ -1,8 +1,9 @@
+import CBuffer from "nel/io/buffer";
+
 export default class CMemStream {
 
     constructor() {
-        this.buffer = new ArrayBuffer(8);
-        this.dataview = new DataView(this.buffer);
+        this.buffer = new CBuffer(8);
         this.pos = 0;
         this.length = 0;
         this.is_writing = true;
@@ -23,7 +24,7 @@ export default class CMemStream {
     write_UINT8( value ) {
         console.assert(typeof(value) === "number");
 
-        this.dataview.setUint8(this.pos++, value);
+        this.buffer.setUint8(this.pos++, value);
         this.length++;
     }
 
@@ -32,7 +33,7 @@ export default class CMemStream {
     }
 
     toString() {
-        var bytes = new Uint8Array(this.buffer, 0, this.length );
+        var bytes = this.buffer.bytes( 0, this.length );
         var byte_string = bytes.reduce(( string, byte, index ) => {
             var prefix = index === this.pos ? "|" : " ";
             var value = byte.toString(16);

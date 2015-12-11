@@ -20,10 +20,10 @@ describe("buildin", function () {
                 it("should return the first byte as lower part", function () {
                     var buffer = new ArrayBuffer(2);
                     var data_view = new DataView(buffer);
-                    data_view.setUint8(0, 0xFE);
-                    data_view.setUint8(1, 0xCA);
+                    data_view.setUint8(0, 0xDE);
+                    data_view.setUint8(1, 0xC0);
 
-                    expect(data_view.getUint16(0, true)).to.equal(0xCAFE);
+                    expect(data_view.getUint16(0, true)).to.equal(0xC0DE);
                 });
             });
 
@@ -31,11 +31,11 @@ describe("buildin", function () {
                 it("should return big endian", function () {
                     var buffer = new ArrayBuffer(2);
                     var data_view = new DataView(buffer);
-                    data_view.setUint8(0, 0xCA);
-                    data_view.setUint8(1, 0xFE);
+                    data_view.setUint8(0, 0xC0);
+                    data_view.setUint8(1, 0xDE);
 
-                    expect(data_view.getUint16(0)).to.equal(0xCAFE);
-                    expect(data_view.getUint16(0, false)).to.equal(0xCAFE);
+                    expect(data_view.getUint16(0)).to.equal(0xC0DE);
+                    expect(data_view.getUint16(0, false)).to.equal(0xC0DE);
                 });
             });
         });

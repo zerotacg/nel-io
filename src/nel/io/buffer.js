@@ -1,3 +1,6 @@
+/**
+ * @class nel.io.CBuffer
+ */
 export default class CBuffer {
 
     constructor( size ) {

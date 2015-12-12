@@ -3,7 +3,7 @@ import jspm from "jspm";
 
 var System = jspm.Loader();
 
-describe("nel.io.CMemStream", function () {
+describe("nel.io.CReadStream", function () {
     var CBuffer;
 
     beforeEach("setup", function ( done ) {

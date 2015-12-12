@@ -4,7 +4,7 @@
   "description": "NeL io library",
   "main": "src/nel/io",
   "scripts": {
-    "lint": "jshint src/nel/**/*.js test/nel/**/*.js",
+    "lint": "jshint src/nel/**/*.js test/**/*.js test/nel/**/*.js",
     "pretest": "npm run lint",
     "test": "mocha --recursive --compilers js:babel/register",
     "postinstall": "jspm install"

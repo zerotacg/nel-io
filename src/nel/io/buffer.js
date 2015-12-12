@@ -34,4 +34,20 @@ export default class CBuffer {
     bytes( byteOffset, length ) {
         return new Uint8Array(this.buffer, byteOffset, length);
     }
+
+    toString() {
+        var bytes = new Uint8Array(this.buffer);
+
+        var byte_string = bytes.reduce(( string, byte, index ) => {
+            var value = byte.toString(16);
+            var prefix = index ? " " : "";
+            if ( byte <= 0xf ) {
+                prefix += "0";
+            }
+
+            return string + prefix + value;
+        }, "");
+
+        return byte_string;
+    }
 }

@@ -6,15 +6,18 @@ var System = jspm.Loader();
 describe("nel", function () {
     describe("io", function () {
         describe("CMemStream", function () {
+            var CBuffer;
             var CMemStream;
 
             beforeEach("setup", function ( done ) {
                 var imports = [
+                    "nel/io/buffer",
                     "nel/io/mem_stream"
                 ];
                 Promise.all(imports.map(path => System.import(path)))
                     .then(modules => {
-                        CMemStream = modules[ 0 ].default;
+                        CBuffer = modules[ 0 ].default;
+                        CMemStream = modules[ 1 ].default;
                     })
                     .then(done, done);
             });
@@ -32,14 +35,14 @@ describe("nel", function () {
                 it("should add 1 byte to the stream", function () {
                     var stream = new CMemStream();
 
-                    stream.serialize_UINT8({ value: -1 }, "value");
-                    stream.serialize_UINT8({ value: 128 }, "value");
+                    stream.write_UINT8(-1);
+                    stream.write_UINT8(128);
 
                     expect(stream.toString()).to.equal(" ff 80>");
                 });
             });
 
-            describe("#serialize()", function () {
+            describe("#write()", function () {
                 it("should write given object", function () {
                     var stream = new CMemStream();
                     var serializable = {
@@ -47,18 +50,25 @@ describe("nel", function () {
 
                         value: -1,
 
-                        serialize: function ( stream ) {
-                            stream.serialize_UINT8(this, "version");
-
-                            // if reading and version does not match throw error
-
-                            stream.serialize_UINT8(this, "value");
-                        },
-
                         writeTo: function ( stream ) {
                             stream.write_UINT8(this.version);
                             stream.write_UINT8(this.value);
-                        },
+                        }
+                    };
+
+                    stream.write(serializable);
+
+                    expect(stream.toString()).to.equal(" 01 ff>");
+                });
+            });
+
+            describe("#read()", function () {
+                it("should write given object", function () {
+                    var stream = new CMemStream();
+                    var serializable = {
+                        version: 1,
+
+                        value: -1,
 
                         readFrom: function ( stream ) {
                             this.version = stream.read_UINT8();
@@ -66,10 +76,16 @@ describe("nel", function () {
                             this.value = stream.read_UINT8();
                         }
                     };
+                    var buffer = new CBuffer(2);
+                    buffer.setUint8(0, 2);
+                    buffer.setUint8(1, 5);
+                    stream.buffer = buffer;
 
-                    stream.serialize(serializable);
 
-                    expect(stream.toString()).to.equal(" 01 ff>");
+                    stream.read(serializable);
+
+                    expect(serializable.version).to.equal(2);
+                    expect(serializable.value).to.equal(5);
                 });
             });
         });

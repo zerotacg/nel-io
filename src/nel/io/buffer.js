@@ -1,6 +1,6 @@
 export default class CBuffer {
 
-    constructor(size) {
+    constructor( size ) {
         this.reserve(size);
     }
 
@@ -20,14 +20,18 @@ export default class CBuffer {
     }
 
     setUint8( byteOffset, value ) {
-        this.data_view.setUint8( byteOffset, value );
+        this.data_view.setUint8(byteOffset, value);
+    }
+
+    getUint8( byteOffset ) {
+        return this.data_view.getUint8(byteOffset);
     }
 
     getUint32( byteOffset, littleEndian ) {
-        return this.data_view.getUint32( byteOffset, littleEndian );
+        return this.data_view.getUint32(byteOffset, littleEndian);
     }
 
-    bytes(byteOffset, length ) {
-        return new Uint8Array(this.buffer, byteOffset, length );
+    bytes( byteOffset, length ) {
+        return new Uint8Array(this.buffer, byteOffset, length);
     }
 }

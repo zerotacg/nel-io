@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-describe("buildin", function () {
+describe("builtin", function () {
     describe("TypedArray", function () {
         describe("#set()", function () {
             it("should initialize to zero", function () {

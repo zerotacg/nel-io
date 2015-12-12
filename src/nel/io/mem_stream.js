@@ -6,19 +6,14 @@ export default class CMemStream {
         this.buffer = new CBuffer(8);
         this.pos = 0;
         this.length = 0;
-        this.is_writing = true;
     }
 
-    serialize( serializable ) {
-        serializable.serialize( this );
+    write( serializable ) {
+        serializable.writeTo( this );
     }
 
-    serialize_UINT8( object, property ) {
-        if ( this.is_writing ) {
-            this.write_UINT8( object[property] );
-        } else {
-            object[property] = this.read_UINT8();
-        }
+    read( serializable ) {
+        serializable.readFrom( this );
     }
 
     write_UINT8( value ) {
@@ -29,13 +24,14 @@ export default class CMemStream {
     }
 
     read_UINT8() {
-        return this.dataview.getUint8(this.pos++);
+        return this.buffer.getUint8(this.pos++);
     }
 
     toString() {
         var bytes = this.buffer.bytes( 0, this.length );
+
         var byte_string = bytes.reduce(( string, byte, index ) => {
-            var prefix = index === this.pos ? "|" : " ";
+            var prefix = this.bytePrefix( index);
             var value = byte.toString(16);
             if ( byte <= 0xf ) {
                 prefix += "0";
@@ -44,10 +40,14 @@ export default class CMemStream {
             return string + prefix + value;
         }, "");
 
-        if ( this.pos === this.length ) {
-            byte_string += ">";
-        }
+        byte_string += this.bytePrefix(this.length);
 
         return byte_string;
+    }
+
+    bytePrefix( index ) {
+        var position_indicator = ">";
+
+        return this.pos === index ? position_indicator : " ";
     }
 }

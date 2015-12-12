@@ -8,34 +8,54 @@ export default class CBuffer {
     }
 
     reserve( size ) {
-        var old_buffer = this.buffer;
+        var array = new Uint8Array(this.buffer);
         this.buffer = new ArrayBuffer(size);
         this.data_view = new DataView(this.buffer);
-        this.set(old_buffer);
+        this.set(array);
 
         this.length = this.buffer.byteLength;
     }
 
-    set( src_buffer ) {
-        var src_array = new Uint8Array(src_buffer);
+    /**
+     * @param {Uint8Array} src_array
+     * @param {number} [byteOffset]
+     */
+    set( src_array, byteOffset ) {
         var dst_array = new Uint8Array(this.buffer);
-        dst_array.set(src_array);
+        dst_array.set(src_array, byteOffset);
     }
 
-    setUint8( byteOffset, value ) {
-        this.data_view.setUint8(byteOffset, value);
+    /**
+     * @param {number} [byteOffset]
+     * @param {number} [length]
+     * @return {Uint8Array}
+     */
+    get( byteOffset, length ) {
+        return new Uint8Array(this.buffer, byteOffset, length);
     }
 
     getUint8( byteOffset ) {
         return this.data_view.getUint8(byteOffset);
     }
 
+    getUint16( byteOffset, littleEndian ) {
+        return this.data_view.getUint16(byteOffset, littleEndian);
+    }
+
     getUint32( byteOffset, littleEndian ) {
         return this.data_view.getUint32(byteOffset, littleEndian);
     }
 
-    bytes( byteOffset, length ) {
-        return new Uint8Array(this.buffer, byteOffset, length);
+    setUint8( byteOffset, value ) {
+        this.data_view.setUint8(byteOffset, value);
+    }
+
+    setInt8( byteOffset, value ) {
+        this.data_view.setInt8(byteOffset, value);
+    }
+
+    setInt16( byteOffset, value, littleEndian ) {
+        this.data_view.setInt16(byteOffset, value, littleEndian);
     }
 
     toString() {

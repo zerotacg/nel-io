@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "NeL io library",
   "main": "src/nel/io",
+  "registry": "github",
   "scripts": {
     "lint": "jshint src/nel/**/*.js test/**/*.js test/nel/**/*.js",
     "pretest": "npm run lint",
@@ -27,7 +28,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/zerotacg/opensteer.js/blob/master/LICENSE"
+      "url": "https://github.com/zerotacg/nel-io/blob/master/LICENSE"
     }
   ],
   "bugs": {

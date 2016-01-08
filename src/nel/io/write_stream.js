@@ -1,9 +1,9 @@
 /**
- * @class nel.io.CWriteStream
+ * @class nlio.CWriteStream
  */
 export default class CWriteStream {
     /**
-     * @param {nel.io.CBuffer} buffer
+     * @param {nlio.CBuffer} buffer
      */
     constructor(buffer) {
         this.buffer = buffer;

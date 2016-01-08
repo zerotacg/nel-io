@@ -1,5 +1,5 @@
 /**
- * @class nel.io.CBuffer
+ * @class nlio.CBuffer
  */
 export default class CBuffer {
 

@@ -9,7 +9,7 @@ System.config({
         ]
     },
     paths: {
-        "nel/*": "src/nel/*",
+        "nel/io/*": "src/nel/io/*",
         "github:*": "jspm_packages/github/*",
         "npm:*": "jspm_packages/npm/*"
     },

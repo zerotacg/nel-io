@@ -24,10 +24,31 @@ export default class CWriteStream {
         this.buffer.setUint8(this.pos++, value);
     }
 
+    writeUint16( value ) {
+        console.assert(typeof(value) === "number", "typeof(value) === 'number'");
+
+        this.buffer.setUint16(this.pos, value, this.littleEndian);
+        this.pos += 2;
+    }
+
+    writeSint16( value ) {
+        console.assert(typeof(value) === "number", "typeof(value) === 'number'");
+
+        this.buffer.setSint16(this.pos, value, this.littleEndian);
+        this.pos += 2;
+    }
+
     writeUint32( value ) {
         console.assert(typeof(value) === "number", "typeof(value) === 'number'");
 
         this.buffer.setUint32(this.pos, value, this.littleEndian);
+        this.pos += 4;
+    }
+
+    writeSint32( value ) {
+        console.assert(typeof(value) === "number", "typeof(value) === 'number'");
+
+        this.buffer.setSint32(this.pos, value, this.littleEndian);
         this.pos += 4;
     }
 
@@ -66,5 +87,18 @@ export default class CWriteStream {
             this.writeUint8(MAX_SINGLE_BYTE_VERSION);
             this.writeUint32(version);
         }
+    }
+
+    writeArray( value, writeElement ) {
+        var length = value.length;
+        this.writeSint32( length );
+
+        for ( var i = 0; i < length; ++i ) {
+            writeElement(this, value[i]);
+        }
+    }
+
+    writeStringArray( value ) {
+        this.writeArray( value, (stream, instance) => stream.writeString(instance) );
     }
 }

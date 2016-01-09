@@ -105,4 +105,8 @@ export default class CReadStream {
 
         return value;
     }
+
+    readStringArray() {
+        this.readArray(stream => stream.readString() );
+    }
 }

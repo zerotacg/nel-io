@@ -37,8 +37,15 @@ export default class CReadStream {
         return value;
     }
 
+    readSint32() {
+        var value = this.buffer.getSint32(this.pos, this.littleEndian);
+        this.pos += 4;
+
+        return value;
+    }
+
     readBuffer( length ) {
-        var value = this.buffer.getBuffer(this.pos, length);
+        var value = this.buffer.get(this.pos, length);
         this.pos += length;
 
         return value;
@@ -49,5 +56,35 @@ export default class CReadStream {
         var buffer = this.readBuffer(length);
 
         return String.fromCharCode.apply(null, buffer);
+    }
+
+    readCheckString( expected ) {
+        var actual = this.readString();
+        if ( expected !== actual ) {
+            var message = `Invalid data format, expected to read "${expected}" but got "${actual}"`;
+
+            throw new TypeError(message);
+        }
+    }
+
+    readVersion() {
+        var version = this.readUint8();
+
+        if ( version === 0xFF ) {
+            version = this.readUint32();
+        }
+
+        return version;
+    }
+
+    readArray( readElement ) {
+        var length = this.readSint32();
+        var value = new Array(length);
+
+        for ( var i = 0; i < length; ++i ) {
+            value[i] = readElement(this);
+        }
+
+        return value;
     }
 }

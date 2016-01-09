@@ -1,5 +1,9 @@
-import { expect } from "chai";
+import { expect, default as chai } from "chai";
+import sinon from "sinon";
+import sinonChai from "sinon-chai";
 import jspm from "jspm";
+
+chai.use(sinonChai);
 
 var System = jspm.Loader();
 
@@ -23,7 +27,7 @@ describe("nel.io.CReadStream", function () {
     var buffer;
     var stream;
     beforeEach("setup", function () {
-        buffer = new CBuffer(8);
+        buffer = new CBuffer(16);
         stream = new CReadStream(buffer);
     });
 
@@ -58,7 +62,7 @@ describe("nel.io.CReadStream", function () {
         });
 
         it("should return an unsigned value", function () {
-            buffer.setInt8(0, -1);
+            buffer.setSint8(0, -1);
             expect(stream.readUint8()).to.equal(0xFF);
         });
     });
@@ -71,7 +75,7 @@ describe("nel.io.CReadStream", function () {
         });
 
         it("should return an unsigned value", function () {
-            buffer.setInt16(0, -1);
+            buffer.setSint16(0, -1);
             expect(stream.readUint16()).to.equal(0xFFFF);
         });
     });
@@ -84,7 +88,7 @@ describe("nel.io.CReadStream", function () {
         });
 
         it("should return an unsigned value", function () {
-            buffer.setInt32(0, -1);
+            buffer.setSint32(0, -1);
             expect(stream.readUint32()).to.equal(0xFFFFFFFF);
         });
     });
@@ -104,32 +108,99 @@ describe("nel.io.CReadStream", function () {
     });
 
     describe("#readString()", function () {
-        var length;
-
-        beforeEach("setup", function () {
-            length = 4;
-            buffer.setUint32(0, length, true);
-        });
-
-        it("should read the length 32bit length of the string", function () {
-            expect(stream.readString()).to.have.length(length);
-        });
-
         it("should read bytes of the string", function () {
             var value = "test";
-
-            buffer.setUint8(4, value.charCodeAt(0));
-            buffer.setUint8(5, value.charCodeAt(1));
-            buffer.setUint8(6, value.charCodeAt(2));
-            buffer.setUint8(7, value.charCodeAt(3));
+            setString(value);
 
             expect(stream.readString()).to.equal(value);
         });
+    });
 
-        it("should advance the position by size of length + length bytes", function () {
-            stream.readString();
+    function setString( value ) {
+        buffer.setUint32(0, value.length, stream.littleEndian);
+        var offset = 4;
 
-            expect(stream.pos).to.equal(4 + length);
+        for ( var i = 0, length = value.length; i < length; ++i ) {
+            buffer.setUint8(offset + i, value.charCodeAt(i));
+        }
+    }
+
+    describe("#readCheckString()", function () {
+        beforeEach("setup", function () {
+            setString("check");
+        });
+
+        context("when the given value is equal to the read value", function () {
+            it("should not throw", function () {
+                expectCheck("check").to.not.throw(Error);
+            });
+        });
+
+        function expectCheck( check ) {
+            return expect(() => stream.readCheckString(check));
+        }
+
+        context("when the given value is not equal to the read value", function () {
+            it("should throw", function () {
+                expectCheck("fail").to.throw(TypeError);
+            });
+        });
+    });
+
+    describe("#readVersion()", function () {
+        it("should read 1 byte", function () {
+            var version = 0xF0;
+            buffer.setUint8(0, version);
+            expect(stream.readVersion()).to.equal(version);
+        });
+        context("when the version byte is 0xff", function () {
+            it("should read 32bit version", function () {
+                var version = 0xFF00FF00;
+                buffer.setUint8(0, 0xFF);
+                buffer.setUint32(1, version, stream.littleEndian);
+                expect(stream.readVersion()).to.equal(version);
+            });
+        });
+    });
+
+    describe("#readArray()", function () {
+        var readElement;
+        var length;
+
+        beforeEach("setup", function () {
+            length = 3;
+            buffer.setSint32(0, length, stream.littleEndian);
+            readElement = sinon.spy();
+        });
+
+        it("should return an array", function () {
+            expect(stream.readArray(readElement)).to.be.an("array");
+        });
+
+        it("should read a 32bit signed length", function () {
+            expect(stream.readArray(readElement)).to.have.length(length);
+        });
+
+        it("should call the given function for every element with itself as parameter", function () {
+            stream.readArray(readElement);
+
+            expect(readElement).to.always.have.been.calledWith(stream);
+        });
+
+        it("should set the return value of the given function as element in the array", function () {
+            var i = 0;
+            var value = stream.readArray(() => `read: ${i++}`);
+
+            expect(value).to.deep.equal(["read: 0", "read: 1", "read: 2"]);
+        });
+
+        context("when the length is negative", function () {
+            it("should throw an RangeError", function () {
+                var length = -1;
+                buffer.setSint32(0, length, stream.littleEndian);
+
+                expect(() => stream.readArray(readElement)).to.throw(RangeError);
+            });
         });
     });
 });

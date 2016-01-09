@@ -1,5 +1,6 @@
 /**
  * @class nlio.CReadStream
+ * @implements {nlio.IReadStream}
  */
 export default class CReadStream {
     /**
@@ -11,8 +12,11 @@ export default class CReadStream {
         this.littleEndian = true;
     }
 
-    read( serializable ) {
-        serializable.readFrom( this );
+    /**
+     * @param {nlio.IReadable} readable
+     */
+    read( readable ) {
+        readable.readFrom( this );
     }
 
     read_UINT8() {

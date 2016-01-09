@@ -34,10 +34,23 @@ export default class CBuffer {
         return new Uint8Array(this.buffer, byteOffset, length);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#getUnit8
+     * @param {number} byteOffset
+     * @returns {number}
+     */
     getUint8( byteOffset ) {
         return this.data_view.getUint8(byteOffset);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#getUint16
+     * @param {number} byteOffset
+     * @param {boolean} [littleEndian=false]
+     * @returns {number}
+     */
     getUint16( byteOffset, littleEndian ) {
         return this.data_view.getUint16(byteOffset, littleEndian);
     }

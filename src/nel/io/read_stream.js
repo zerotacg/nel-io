@@ -45,7 +45,7 @@ export default class CReadStream {
     }
 
     readString() {
-        var length = this.readUint32()
+        var length = this.readUint32();
         var buffer = this.readBuffer(length);
 
         return String.fromCharCode.apply(null, buffer);

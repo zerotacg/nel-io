@@ -17,6 +17,8 @@ export default class CBuffer {
     }
 
     /**
+     * @method
+     * @name nlio.CBuffer#set
      * @param {Uint8Array} src_array
      * @param {number} [byteOffset]
      */
@@ -26,6 +28,8 @@ export default class CBuffer {
     }
 
     /**
+     * @method
+     * @name nlio.CBuffer#get
      * @param {number} [byteOffset]
      * @param {number} [length]
      * @return {Uint8Array}
@@ -98,26 +102,66 @@ export default class CBuffer {
         return this.data_view.getInt32(byteOffset, littleEndian);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#setUint8
+     * @param {number} byteOffset
+     * @param {number} value
+     */
     setUint8( byteOffset, value ) {
         this.data_view.setUint8(byteOffset, value);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#setSint8
+     * @param {number} byteOffset
+     * @param {number} value
+     */
     setSint8( byteOffset, value ) {
         this.data_view.setInt8(byteOffset, value);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#setUint16
+     * @param {number} byteOffset
+     * @param {number} value
+     * @param {boolean} [littleEndian=false]
+     */
     setUint16( byteOffset, value, littleEndian ) {
         this.data_view.setUint16(byteOffset, value, littleEndian);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#setSint16
+     * @param {number} byteOffset
+     * @param {number} value
+     * @param {boolean} [littleEndian=false]
+     */
     setSint16( byteOffset, value, littleEndian ) {
         this.data_view.setInt16(byteOffset, value, littleEndian);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#setUint32
+     * @param {number} byteOffset
+     * @param {number} value
+     * @param {boolean} [littleEndian=false]
+     */
     setUint32( byteOffset, value, littleEndian ) {
         this.data_view.setUint32(byteOffset, value, littleEndian);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#setSint32
+     * @param {number} byteOffset
+     * @param {number} value
+     * @param {boolean} [littleEndian=false]
+     */
     setSint32( byteOffset, value, littleEndian ) {
         this.data_view.setInt32(byteOffset, value, littleEndian);
     }

@@ -19,7 +19,7 @@ describe("nel.io.CWriteStream", function () {
                 CBuffer = modules[ 0 ].default;
                 CWriteStream = modules[ 1 ].default;
 
-                buffer = new CBuffer(2);
+                buffer = new CBuffer(8);
                 stream = new CWriteStream(buffer);
             })
             .then(done, done);
@@ -29,32 +29,50 @@ describe("nel.io.CWriteStream", function () {
         it("should write given object", function () {
             var serializable = {
                 writeTo: function ( stream ) {
-                    stream.write_UINT8(1);
-                    stream.write_UINT8(-1);
+                    stream.writeUint8(1);
+                    stream.writeUint8(-1);
                 }
             };
 
             stream.write(serializable);
 
-            expect(buffer.toString()).to.equal("01 ff");
+            expect(buffer.toString()).to.equal("01 ff 00 00 00 00 00 00");
         });
     });
 
-    describe("#write_UINT8()", function () {
+    describe("#writeUint8()", function () {
         context("when not called with a number", function () {
             it("should throw", function () {
                 expect(() => {
-                    stream.write_UINT8("string value");
+                    stream.writeUint8("string value");
                 }).to.throw("AssertionError: typeof(value) === 'number'");
             });
         });
 
         it("should add 1 byte to the stream", function () {
-            stream.write_UINT8(-1);
-            stream.write_UINT8(128);
+            stream.writeUint8(-1);
+            stream.writeUint8(128);
 
-            expect(buffer.toString()).to.equal("ff 80");
+            expect(buffer.toString()).to.equal("ff 80 00 00 00 00 00 00");
             expect(stream.pos).to.equal(2);
+        });
+    });
+
+    describe("#writeUint32()", function () {
+        context("when not called with a number", function () {
+            it("should throw", function () {
+                expect(() => {
+                    stream.writeUint32("string value");
+                }).to.throw("AssertionError: typeof(value) === 'number'");
+            });
+        });
+
+        it("should add 4 bytes to the stream", function () {
+            stream.writeUint32(-1);
+            stream.writeUint32(1);
+
+            expect(buffer.toString()).to.equal("ff ff ff ff 01 00 00 00");
+            expect(stream.pos).to.equal(8);
         });
     });
 });

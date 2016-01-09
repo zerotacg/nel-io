@@ -11,24 +11,24 @@
 
 /**
  * @method
- * @name nlio.IReadStream#read_UINT8
+ * @name nlio.IReadStream#readUint8
  * @return {uint8}
  */
 
 /**
  * @method
- * @name nlio.IReadStream#read_UINT16
+ * @name nlio.IReadStream#readUint16
  * @return {uint16}
  */
 
 /**
  * @method
- * @name nlio.IReadStream#read_STRING
+ * @name nlio.IReadStream#readString
  * @return {string}
  */
 
 /**
  * @method
- * @name nlio.IReadStream#readCheck
+ * @name nlio.IReadStream#readCheckString
  * @param {string} check
  */

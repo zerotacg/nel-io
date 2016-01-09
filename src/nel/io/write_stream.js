@@ -41,12 +41,18 @@ export default class CWriteStream {
     writeString( value ) {
         console.assert(typeof(value) === "string", "typeof(value) === 'string'");
 
+        this.writeUint32(value.length);
+        this.writeChars(value);
+    }
+
+    writeChars( value ) {
+        console.assert(typeof(value) === "string", "typeof(value) === 'string'");
+
         var length = value.length;
         var buffer = new Uint8Array(length);
         for ( var i = 0; i < length; ++i ) {
             buffer[ i ] = value.charCodeAt(i);
         }
-        this.writeUint32(length);
         this.writeBuffer(buffer);
     }
 

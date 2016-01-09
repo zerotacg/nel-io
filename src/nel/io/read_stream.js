@@ -55,6 +55,11 @@ export default class CReadStream {
 
     readString() {
         var length = this.readUint32();
+
+        return this.readChars(length);
+    }
+
+    readChars( length ) {
         var buffer = this.readBuffer(length);
 
         return String.fromCharCode.apply(null, buffer);
@@ -62,11 +67,22 @@ export default class CReadStream {
 
     readCheckString( expected ) {
         var actual = this.readString();
+
+        this.readCheck(expected, actual);
+    }
+
+    readCheck( expected, actual ) {
         if ( expected !== actual ) {
             var message = `Invalid data format, expected to read "${expected}" but got "${actual}"`;
 
             throw new TypeError(message);
         }
+    }
+
+    readCheckChars( expected ) {
+        var actual = this.readChars(expected.length);
+
+        this.readCheck(expected, actual);
     }
 
     readVersion() {

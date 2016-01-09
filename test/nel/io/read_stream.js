@@ -110,16 +110,20 @@ describe("nel.io.CReadStream", function () {
     describe("#readString()", function () {
         it("should read bytes of the string", function () {
             var value = "test";
-            setString(value);
+            writeString(value);
 
             expect(stream.readString()).to.equal(value);
         });
     });
 
-    function setString( value ) {
+    function writeString( value ) {
         buffer.setUint32(0, value.length, stream.littleEndian);
         var offset = 4;
 
+        setString(offset, value);
+    }
+
+    function setString( offset, value ) {
         for ( var i = 0, length = value.length; i < length; ++i ) {
             buffer.setUint8(offset + i, value.charCodeAt(i));
         }
@@ -127,7 +131,7 @@ describe("nel.io.CReadStream", function () {
 
     describe("#readCheckString()", function () {
         beforeEach("setup", function () {
-            setString("check");
+            writeString("check");
         });
 
         context("when the given value is equal to the read value", function () {
@@ -138,6 +142,29 @@ describe("nel.io.CReadStream", function () {
 
         function expectCheck( check ) {
             return expect(() => stream.readCheckString(check));
+        }
+
+        context("when the given value is not equal to the read value", function () {
+            it("should throw", function () {
+                expectCheck("fail").to.throw(TypeError);
+            });
+        });
+    });
+
+    describe("#readCheckChars()", function () {
+        beforeEach("setup", function () {
+            var header = "check";
+            setString(0, header);
+        });
+
+        context("when the given value is equal to the read value", function () {
+            it("should not throw", function () {
+                expectCheck("check").to.not.throw(Error);
+            });
+        });
+
+        function expectCheck( check ) {
+            return expect(() => stream.readCheckChars(check));
         }
 
         context("when the given value is not equal to the read value", function () {

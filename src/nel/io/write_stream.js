@@ -2,6 +2,7 @@ import { MAX_SINGLE_BYTE_VERSION } from "nel/io/stream";
 
 /**
  * @class nlio.CWriteStream
+ * @implements {nlio.IWriteStream}
  */
 export default class CWriteStream {
     /**

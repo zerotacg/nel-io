@@ -1,3 +1,5 @@
+import { MAX_SINGLE_BYTE_VERSION } from "nel/io/stream";
+
 /**
  * @class nlio.CWriteStream
  */
@@ -45,5 +47,17 @@ export default class CWriteStream {
         }
         this.writeUint32(length);
         this.writeBuffer(buffer);
+    }
+
+    writeVersion( version ) {
+        console.assert(typeof(version) === "number", "typeof(version) === 'number'");
+
+        if ( version < MAX_SINGLE_BYTE_VERSION ) {
+            this.writeUint8(version);
+        }
+        else {
+            this.writeUint8(MAX_SINGLE_BYTE_VERSION);
+            this.writeUint32(version);
+        }
     }
 }

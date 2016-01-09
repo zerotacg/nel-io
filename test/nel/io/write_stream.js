@@ -75,4 +75,41 @@ describe("nel.io.CWriteStream", function () {
             expect(stream.pos).to.equal(8);
         });
     });
+
+    describe("#writeString()", function () {
+        it("should write the length and the bytes", function () {
+            var value = "test";
+            stream.writeString(value);
+
+            expect(buffer.toString()).to.equal("04 00 00 00 74 65 73 74");
+            expect(stream.pos).to.equal(4 + value.length);
+        });
+    });
+
+    describe("#writeVersion()", function () {
+        context("when the version is below 255", function () {
+            it("should write 1 byte ", function () {
+                stream.writeVersion(0x01);
+                stream.writeVersion(0xFE);
+
+                expect(buffer.toString()).to.equal("01 fe 00 00 00 00 00 00");
+            });
+        });
+
+        context("when the version is 255", function () {
+            it("should write 1 byte 0xFF and 4 bytes version", function () {
+                stream.writeVersion(0xFF);
+
+                expect(buffer.toString()).to.equal("ff ff 00 00 00 00 00 00");
+            });
+        });
+
+        context("when the version is above 255", function () {
+            it("should write 1 byte 0xFF and 4 bytes version", function () {
+                stream.writeVersion(0xDEADC0DE);
+
+                expect(buffer.toString()).to.equal("ff de c0 ad de 00 00 00");
+            });
+        });
+    });
 });

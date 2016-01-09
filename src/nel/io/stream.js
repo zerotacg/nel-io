@@ -1,0 +1,1 @@
+export const MAX_SINGLE_BYTE_VERSION = 0xFF;

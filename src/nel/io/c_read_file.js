@@ -5,9 +5,9 @@
 export default class CReadFile {
     read() {}
 
-    read_UINT8() {}
+    readUint8() {}
 
-    read_UINT16() {}
+    readUint16() {}
 
     close() {}
 }

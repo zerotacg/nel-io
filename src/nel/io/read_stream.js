@@ -1,3 +1,5 @@
+import { MAX_SINGLE_BYTE_VERSION } from "nel/io/stream";
+
 /**
  * @class nlio.CReadStream
  * @implements {nlio.IReadStream}
@@ -70,7 +72,7 @@ export default class CReadStream {
     readVersion() {
         var version = this.readUint8();
 
-        if ( version === 0xFF ) {
+        if ( version === MAX_SINGLE_BYTE_VERSION ) {
             version = this.readUint32();
         }
 

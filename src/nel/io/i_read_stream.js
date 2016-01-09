@@ -20,3 +20,15 @@
  * @name nlio.IReadStream#read_UINT16
  * @return {uint16}
  */
+
+/**
+ * @method
+ * @name nlio.IReadStream#read_STRING
+ * @return {string}
+ */
+
+/**
+ * @method
+ * @name nlio.IReadStream#readCheck
+ * @param {string} check
+ */

@@ -1,3 +1,10 @@
+import CWriteStream from "nel/io/write_stream";
+
+const A = "A".charCodeAt(0);
+const Z = "Z".charCodeAt(0);
+const a = "a".charCodeAt(0);
+const z = "z".charCodeAt(0);
+
 /**
  * @class nlio.CBuffer
  */
@@ -11,6 +18,28 @@ export default class CBuffer {
         var buffer = new ArrayBuffer(size || default_size);
 
         return new CBuffer(buffer);
+    }
+
+    static fromValues( values ) {
+        var buffer = CBuffer.create(values.length);
+        var stream = new CWriteStream(buffer);
+        stream.littleEndian = false;
+        values.map(value => {
+            if ( typeof(value) === "string" ) {
+                stream.writeChars(value);
+            }
+            else if ( value <= 0xFF ) {
+                stream.writeUint8(value);
+            }
+            else if ( value <= 0xFFFF ) {
+                stream.writeUint16(value);
+            }
+            else {
+                stream.writeUint32(value);
+            }
+        });
+
+        return buffer;
     }
 
     /**
@@ -29,7 +58,15 @@ export default class CBuffer {
         this.data_view = new DataView(buffer);
     }
 
+    /**
+     * @method
+     * @name nlio.CBuffer#reserve
+     * @param {number} size
+     */
     reserve( size ) {
+        if ( size < this.length ) {
+            return;
+        }
         var array = new Uint8Array(this.buffer);
         var buffer = new ArrayBuffer(size);
 
@@ -191,11 +228,19 @@ export default class CBuffer {
         var bytes = new Uint8Array(this.buffer);
 
         var byte_string = bytes.reduce(( string, byte, index ) => {
-            var value = byte.toString(16);
-            var prefix = index ? " " : "";
-            if ( byte <= 0xf ) {
-                prefix += "0";
+            var value;
+            var isPrintable = A <= byte && byte <= Z || a <= byte && byte <= z;
+            if ( isPrintable ) {
+                value = String.fromCharCode(byte);
             }
+            else
+            {
+                value = byte.toString(16);
+                if ( byte <= 0xf ) {
+                    value = "0" + value;
+                }
+            }
+            var prefix = (index && !(index % 4)) ? " " : "";
 
             return string + prefix + value;
         }, "");

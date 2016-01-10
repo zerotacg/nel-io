@@ -39,7 +39,7 @@ describe("nel.io.CWriteStream", function () {
 
             stream.write(serializable);
 
-            expect(buffer.toString()).to.equal("01 ff 00 00 00 00 00 00");
+            expect(buffer.toString()).to.equal("01ff0000 00000000");
         });
     });
 
@@ -56,7 +56,7 @@ describe("nel.io.CWriteStream", function () {
             stream.writeUint8(-1);
             stream.writeUint8(128);
 
-            expect(buffer.toString()).to.equal("ff 80 00 00 00 00 00 00");
+            expect(buffer.toString()).to.equal("ff800000 00000000");
             expect(stream.pos).to.equal(2);
         });
     });
@@ -74,7 +74,7 @@ describe("nel.io.CWriteStream", function () {
             stream.writeUint32(-1);
             stream.writeUint32(1);
 
-            expect(buffer.toString()).to.equal("ff ff ff ff 01 00 00 00");
+            expect(buffer.toString()).to.equal("ffffffff 01000000");
             expect(stream.pos).to.equal(8);
         });
     });
@@ -84,7 +84,7 @@ describe("nel.io.CWriteStream", function () {
             var value = "test";
             stream.writeString(value);
 
-            expect(buffer.toString()).to.equal("04 00 00 00 74 65 73 74");
+            expect(buffer.toString()).to.equal("04000000 " + value);
             expect(stream.pos).to.equal(4 + value.length);
         });
     });
@@ -95,7 +95,7 @@ describe("nel.io.CWriteStream", function () {
                 stream.writeVersion(0x01);
                 stream.writeVersion(0xFE);
 
-                expect(buffer.toString()).to.equal("01 fe 00 00 00 00 00 00");
+                expect(buffer.toString()).to.equal("01fe0000 00000000");
             });
         });
 
@@ -103,7 +103,7 @@ describe("nel.io.CWriteStream", function () {
             it("should write 1 byte 0xFF and 4 bytes version", function () {
                 stream.writeVersion(0xFF);
 
-                expect(buffer.toString()).to.equal("ff ff 00 00 00 00 00 00");
+                expect(buffer.toString()).to.equal("ffff0000 00000000");
             });
         });
 
@@ -111,7 +111,7 @@ describe("nel.io.CWriteStream", function () {
             it("should write 1 byte 0xFF and 4 bytes version", function () {
                 stream.writeVersion(0xDEADC0DE);
 
-                expect(buffer.toString()).to.equal("ff de c0 ad de 00 00 00");
+                expect(buffer.toString()).to.equal("ffdec0ad de000000");
             });
         });
     });

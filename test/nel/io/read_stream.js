@@ -211,6 +211,7 @@ describe("nel.io.CReadStream", function () {
         it("should call the given function for every element with itself as parameter", function () {
             stream.readArray(readElement);
 
+            expect(readElement).to.always.have.been.calledOn(stream);
             expect(readElement).to.always.have.been.calledWith(stream);
         });
 

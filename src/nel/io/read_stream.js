@@ -25,8 +25,19 @@ export default class CReadStream {
         return this.buffer.getUint8(this.pos++);
     }
 
+    readSint8() {
+        return this.buffer.getSint8(this.pos++);
+    }
+
     readUint16() {
         var value = this.buffer.getUint16(this.pos, this.littleEndian);
+        this.pos += 2;
+
+        return value;
+    }
+
+    readSint16() {
+        var value = this.buffer.getSint16(this.pos, this.littleEndian);
         this.pos += 2;
 
         return value;
@@ -44,6 +55,16 @@ export default class CReadStream {
         this.pos += 4;
 
         return value;
+    }
+
+    readBool() {
+        return this.readBit();
+    }
+
+    readBit() {
+        var value = this.readUint8();
+
+        return !!value;
     }
 
     readBuffer( length ) {
@@ -107,13 +128,13 @@ export default class CReadStream {
         var value = new Array(length);
 
         for ( var i = 0; i < length; ++i ) {
-            value[ i ] = readElement(this);
+            value[ i ] = readElement.call(this, this);
         }
 
         return value;
     }
 
     readStringArray() {
-        this.readArray(stream => stream.readString());
+        return this.readArray(this.readString);
     }
 }

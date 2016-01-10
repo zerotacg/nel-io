@@ -17,8 +17,32 @@
 
 /**
  * @method
+ * @name nlio.IReadStream#readSint8
+ * @return {sint8}
+ */
+
+/**
+ * @method
  * @name nlio.IReadStream#readUint16
  * @return {uint16}
+ */
+
+/**
+ * @method
+ * @name nlio.IReadStream#readSint16
+ * @return {sint16}
+ */
+
+/**
+ * @method
+ * @name nlio.IReadStream#readUint32
+ * @return {uint32}
+ */
+
+/**
+ * @method
+ * @name nlio.IReadStream#readSint32
+ * @return {sint32}
  */
 
 /**

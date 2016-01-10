@@ -1,4 +1,4 @@
-import { MAX_SINGLE_BYTE_VERSION } from "nel/io/stream";
+import { MAX_SINGLE_BYTE_VERSION, VersionError } from "nel/io/stream";
 
 /**
  * @class nlio.CReadStream
@@ -95,18 +95,25 @@ export default class CReadStream {
         return version;
     }
 
+    readCheckVersion( expected ) {
+        var actual = this.readVersion();
+        if ( expected !== actual ) {
+            throw new VersionError(expected, actual);
+        }
+    }
+
     readArray( readElement ) {
         var length = this.readSint32();
         var value = new Array(length);
 
         for ( var i = 0; i < length; ++i ) {
-            value[i] = readElement(this);
+            value[ i ] = readElement(this);
         }
 
         return value;
     }
 
     readStringArray() {
-        this.readArray(stream => stream.readString() );
+        this.readArray(stream => stream.readString());
     }
 }

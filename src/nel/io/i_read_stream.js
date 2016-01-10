@@ -30,5 +30,11 @@
 /**
  * @method
  * @name nlio.IReadStream#readCheckString
- * @param {string} check
+ * @param {string} expected
+ */
+
+/**
+ * @method
+ * @name nlio.IReadStream#readCheckVersion
+ * @param {number} expected
  */

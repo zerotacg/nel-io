@@ -2,18 +2,33 @@
  * @class nlio.CBuffer
  */
 export default class CBuffer {
+    /**
+     * @param {number|ArrayBuffer} sizeOrBuffer
+     */
+    constructor( sizeOrBuffer ) {
+        if ( sizeOrBuffer instanceof ArrayBuffer ) {
+            this.setBuffer(sizeOrBuffer)
+        }
+        else {
+            this.reserve(sizeOrBuffer);
+        }
+    }
 
-    constructor( size ) {
-        this.reserve(size);
+    /**
+     * @param {ArrayBuffer} buffer
+     */
+    setBuffer( buffer ) {
+        this.buffer = buffer;
+        this.length = buffer.byteLength;
+        this.data_view = new DataView(buffer);
     }
 
     reserve( size ) {
         var array = new Uint8Array(this.buffer);
-        this.buffer = new ArrayBuffer(size);
-        this.data_view = new DataView(this.buffer);
-        this.set(array);
+        var buffer = new ArrayBuffer(size);
 
-        this.length = this.buffer.byteLength;
+        this.setBuffer(buffer);
+        this.set(array);
     }
 
     /**

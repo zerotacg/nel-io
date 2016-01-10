@@ -6,7 +6,7 @@ var System = jspm.Loader();
 describe("nel.io.CReadStream", function () {
     var CBuffer;
 
-    beforeEach("setup", function ( done ) {
+    before("imports", function ( done ) {
         var imports = [
             "nel/io/buffer"
         ];

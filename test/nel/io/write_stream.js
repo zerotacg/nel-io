@@ -6,10 +6,8 @@ var System = jspm.Loader();
 describe("nel.io.CWriteStream", function () {
     var CBuffer;
     var CWriteStream;
-    var buffer;
-    var stream;
 
-    beforeEach("setup", function ( done ) {
+    before("imports", function ( done ) {
         var imports = [
             "nel/io/buffer",
             "nel/io/write_stream"
@@ -18,11 +16,16 @@ describe("nel.io.CWriteStream", function () {
             .then(modules => {
                 CBuffer = modules[ 0 ].default;
                 CWriteStream = modules[ 1 ].default;
-
-                buffer = new CBuffer(8);
-                stream = new CWriteStream(buffer);
             })
             .then(done, done);
+    });
+
+    var buffer;
+    var stream;
+
+    beforeEach("setup", function () {
+        buffer = CBuffer.create(8);
+        stream = new CWriteStream(buffer);
     });
 
     describe("#write()", function () {

@@ -27,7 +27,7 @@ describe("nel.io.CReadStream", function () {
     var buffer;
     var stream;
     beforeEach("setup", function () {
-        buffer = new CBuffer(16);
+        buffer = CBuffer.create(16);
         stream = new CReadStream(buffer);
     });
 

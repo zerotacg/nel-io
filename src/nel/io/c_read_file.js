@@ -1,18 +1,19 @@
 import CBuffer from "nel/io/buffer";
+import CReadStream from "nel/io/read_stream";
 
 /**
  * @class nlio.CReadFile
- * @implements {nlio.IReadStream}
  */
-export default class CReadFile {
+export default class CReadFile extends CReadStream {
     /**
      * @param {File} file
      * @return {Promise<ArrayBuffer>}
      */
-    static readAsArrayBuffer(file) {
-        return new Promise(( reject, resolve) => {
+    static readAsArrayBuffer( file ) {
+        return new Promise(( resolve, reject ) => {
             var reader = new FileReader();
-            reader.addEventListener("load", resolve);
+            reader.addEventListener("load", () => resolve(reader.result));
+            reader.addEventListener("error", reject);
             reader.readAsArrayBuffer(file);
         });
     }
@@ -21,20 +22,14 @@ export default class CReadFile {
      * @param {File} file
      * @return {Promise<CReadFile>}
      */
-    static open(file) {
+    static open( file ) {
         return (this.readAsArrayBuffer(file)
-            .then(array_buffer => {
-                var buffer = new CBuffer( array_buffer );
-                return new CReadFile(buffer);
-            })
+                .then(array_buffer => {
+                    var buffer = new CBuffer(array_buffer);
+                    return new CReadFile(buffer);
+                })
         );
     }
-
-    read() {}
-
-    readUint8() {}
-
-    readUint16() {}
 
     close() {}
 }

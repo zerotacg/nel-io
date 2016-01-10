@@ -3,15 +3,21 @@
  */
 export default class CBuffer {
     /**
-     * @param {number|ArrayBuffer} sizeOrBuffer
+     * @param {number} [size=16]
+     * @returns {CBuffer}
      */
-    constructor( sizeOrBuffer ) {
-        if ( sizeOrBuffer instanceof ArrayBuffer ) {
-            this.setBuffer(sizeOrBuffer)
-        }
-        else {
-            this.reserve(sizeOrBuffer);
-        }
+    static create( size ) {
+        var default_size = 16;
+        var buffer = new ArrayBuffer(size || default_size);
+
+        return new CBuffer(buffer);
+    }
+
+    /**
+     * @param {ArrayBuffer} buffer
+     */
+    constructor( buffer ) {
+        this.setBuffer(buffer)
     }
 
     /**

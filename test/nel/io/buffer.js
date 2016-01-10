@@ -19,7 +19,7 @@ describe("nel.io.CReadStream", function () {
 
     describe("#reserve()", function () {
         it("should increase the buffer to hold at least size bytes", function () {
-            var buffer = new CBuffer();
+            var buffer = CBuffer.create();
             var size = 32;
 
             buffer.reserve(size);
@@ -28,7 +28,7 @@ describe("nel.io.CReadStream", function () {
         });
 
         it("should preserve current content", function () {
-            var buffer = new CBuffer(2);
+            var buffer = CBuffer.create(2);
 
             buffer.setUint8(0, 0xDE);
             buffer.setUint8(1, 0xAD);

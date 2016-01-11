@@ -1,5 +1,15 @@
 import { MAX_SINGLE_BYTE_VERSION, VersionError } from "nel/io/stream";
 
+class UINT8 {
+    static read( stream ) {
+        return stream.readUint8();
+    }
+}
+
+const Types = {
+    "uint8" : UINT8
+}
+
 /**
  * @class nlio.CReadStream
  * @implements {nlio.IReadStream}
@@ -12,6 +22,7 @@ export default class CReadStream {
         this.buffer = buffer;
         this.pos = 0;
         this.littleEndian = true;
+        this.types = Types;
     }
 
     /**
@@ -19,6 +30,12 @@ export default class CReadStream {
      */
     read( readable ) {
         readable.readFrom(this);
+    }
+
+    readType( type_name ) {
+        var type = this.types[type_name];
+
+        return type.read(this);
     }
 
     readUint8() {

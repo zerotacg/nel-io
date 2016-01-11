@@ -54,6 +54,19 @@ describe("nel.io.CReadStream", function () {
         });
     });
 
+    describe("#readType()", function () {
+        it("should read a uint8", function () {
+            var type_name = "uint8";
+            var type = stream.types[type_name];
+            var value = "type read";
+            sinon.stub(type, "read").returns(value);
+
+            expect(stream.readType(type_name)).to.equal(value);
+            expect(type.read).to.have.been.calledOnce;
+            expect(type.read).to.have.been.calledWith(stream);
+        });
+    });
+
     describe("#readUint8()", function () {
         it("should advance the position by 1 bytes", function () {
             stream.readUint8();
@@ -219,7 +232,7 @@ describe("nel.io.CReadStream", function () {
             var i = 0;
             var value = stream.readArray(() => `read: ${i++}`);
 
-            expect(value).to.deep.equal(["read: 0", "read: 1", "read: 2"]);
+            expect(value).to.deep.equal([ "read: 0", "read: 1", "read: 2" ]);
         });
 
         context("when the length is negative", function () {

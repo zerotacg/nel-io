@@ -46,7 +46,7 @@ export default class CBuffer {
      * @param {ArrayBuffer} buffer
      */
     constructor( buffer ) {
-        this.setBuffer(buffer)
+        this.setBuffer(buffer);
     }
 
     /**
@@ -240,7 +240,7 @@ export default class CBuffer {
                     value = "0" + value;
                 }
             }
-            var prefix = (index && !(index % 4)) ? " " : "";
+            var prefix = (index && (index % 4 === 0)) ? " " : "";
 
             return string + prefix + value;
         }, "");

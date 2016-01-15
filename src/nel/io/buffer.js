@@ -108,12 +108,32 @@ export default class CBuffer {
 
     /**
      * @method
+     * @name nlio.CBuffer#setUint8
+     * @param {number} byteOffset
+     * @param {number} value
+     */
+    setUint8( byteOffset, value ) {
+        this.data_view.setUint8(byteOffset, value);
+    }
+
+    /**
+     * @method
      * @name nlio.CBuffer#getSint8
      * @param {number} byteOffset
      * @returns {number}
      */
     getSint8( byteOffset ) {
         return this.data_view.getInt8(byteOffset);
+    }
+
+    /**
+     * @method
+     * @name nlio.CBuffer#setSint8
+     * @param {number} byteOffset
+     * @param {number} value
+     */
+    setSint8( byteOffset, value ) {
+        this.data_view.setInt8(byteOffset, value);
     }
 
     /**
@@ -129,70 +149,6 @@ export default class CBuffer {
 
     /**
      * @method
-     * @name nlio.CBuffer#getSint16
-     * @param {number} byteOffset
-     * @param {boolean} [littleEndian=false]
-     * @returns {number}
-     */
-    getSint16( byteOffset, littleEndian ) {
-        return this.data_view.getInt16(byteOffset, littleEndian);
-    }
-
-    /**
-     * @method
-     * @name nlio.CBuffer#getUint32
-     * @param {number} byteOffset
-     * @param {boolean} [littleEndian=false]
-     * @returns {number}
-     */
-    getUint32( byteOffset, littleEndian ) {
-        return this.data_view.getUint32(byteOffset, littleEndian);
-    }
-
-    /**
-     * @method
-     * @name nlio.CBuffer#getSint32
-     * @param {number} byteOffset
-     * @param {boolean} [littleEndian=false]
-     * @returns {number}
-     */
-    getSint32( byteOffset, littleEndian ) {
-        return this.data_view.getInt32(byteOffset, littleEndian);
-    }
-
-    /**
-     * @method
-     * @name nlio.CBuffer#getFloat
-     * @param {number} byteOffset
-     * @param {boolean} [littleEndian=false]
-     * @returns {number}
-     */
-    getFloat( byteOffset, littleEndian ) {
-        return this.data_view.getFloat32(byteOffset, littleEndian);
-    }
-
-    /**
-     * @method
-     * @name nlio.CBuffer#setUint8
-     * @param {number} byteOffset
-     * @param {number} value
-     */
-    setUint8( byteOffset, value ) {
-        this.data_view.setUint8(byteOffset, value);
-    }
-
-    /**
-     * @method
-     * @name nlio.CBuffer#setSint8
-     * @param {number} byteOffset
-     * @param {number} value
-     */
-    setSint8( byteOffset, value ) {
-        this.data_view.setInt8(byteOffset, value);
-    }
-
-    /**
-     * @method
      * @name nlio.CBuffer#setUint16
      * @param {number} byteOffset
      * @param {number} value
@@ -200,6 +156,17 @@ export default class CBuffer {
      */
     setUint16( byteOffset, value, littleEndian ) {
         this.data_view.setUint16(byteOffset, value, littleEndian);
+    }
+
+    /**
+     * @method
+     * @name nlio.CBuffer#getSint16
+     * @param {number} byteOffset
+     * @param {boolean} [littleEndian=false]
+     * @returns {number}
+     */
+    getSint16( byteOffset, littleEndian ) {
+        return this.data_view.getInt16(byteOffset, littleEndian);
     }
 
     /**
@@ -215,6 +182,17 @@ export default class CBuffer {
 
     /**
      * @method
+     * @name nlio.CBuffer#getUint32
+     * @param {number} byteOffset
+     * @param {boolean} [littleEndian=false]
+     * @returns {number}
+     */
+    getUint32( byteOffset, littleEndian ) {
+        return this.data_view.getUint32(byteOffset, littleEndian);
+    }
+
+    /**
+     * @method
      * @name nlio.CBuffer#setUint32
      * @param {number} byteOffset
      * @param {number} value
@@ -226,13 +204,13 @@ export default class CBuffer {
 
     /**
      * @method
-     * @name nlio.CBuffer#setSint32
+     * @name nlio.CBuffer#getSint32
      * @param {number} byteOffset
-     * @param {number} value
      * @param {boolean} [littleEndian=false]
+     * @returns {number}
      */
-    setSint32( byteOffset, value, littleEndian ) {
-        this.data_view.setInt32(byteOffset, value, littleEndian);
+    getSint32( byteOffset, littleEndian ) {
+        return this.data_view.getInt32(byteOffset, littleEndian);
     }
 
     /**
@@ -244,6 +222,29 @@ export default class CBuffer {
      */
     setSint32( byteOffset, value, littleEndian ) {
         this.data_view.setFloat32(byteOffset, value, littleEndian);
+    }
+
+    /**
+     * @method
+     * @name nlio.CBuffer#getFloat
+     * @param {number} byteOffset
+     * @param {boolean} [littleEndian=false]
+     * @returns {number}
+     */
+    getFloat( byteOffset, littleEndian ) {
+        return this.data_view.getFloat32(byteOffset, littleEndian);
+    }
+
+    /**
+     * @method
+     * @name nlio.CBuffer#getFloat
+     * @param {number} byteOffset
+     * @param {number} value
+     * @param {boolean} [littleEndian=false]
+     * @returns {number}
+     */
+    setFloat( byteOffset, value, littleEndian ) {
+        return this.data_view.setFloat32(byteOffset, value, littleEndian);
     }
 
     toString() {

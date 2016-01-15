@@ -12,36 +12,6 @@ export class CheckChars {
     }
 }
 
-export class uint8 {
-    static readFrom( stream ) {
-        return stream.readUint8();
-    }
-}
-
-export class uint16 {
-    static readFrom( stream ) {
-        return stream.readUint16();
-    }
-}
-
-export class sint16 {
-    static readFrom( stream ) {
-        return stream.readSint16();
-    }
-}
-
-export class sint32 {
-    static readFrom( stream ) {
-        return stream.readSint32();
-    }
-}
-
-export class float {
-    static readFrom( stream ) {
-        return stream.readFloat();
-    }
-}
-
 /**
  * @class nlio.CReadStream
  * @implements {nlio.IReadStream}
@@ -61,29 +31,6 @@ export default class CReadStream {
      */
     read( readable ) {
         return readable.readFrom(this);
-    }
-
-    readModel( Type ) {
-        var fields = Type.fields;
-        var data = fields
-            .map(field => {
-                var type = field.type;
-                var name = field.name;
-                console.assert(type, "Type should exist" + JSON.stringify(field));
-                console.assert(type.readFrom, "Type have readFrom method" + JSON.stringify(field));
-                var value = type.readFrom(this, field);
-
-                return { name, value };
-            })
-            .filter(entry => entry.name)
-            .reduce(( data, entry ) => {
-                data[ entry.name ] = entry.value;
-
-                return data;
-            }, {})
-        ;
-
-        return Type.create(data);
     }
 
     readUint8() {

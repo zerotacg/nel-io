@@ -21,6 +21,10 @@ export default class AModel {
         return this.create(data);
     }
 
+    static create(data) {
+        return new this(data);
+    }
+
     constructor(config) {
         Object.assign(this, config);
     }

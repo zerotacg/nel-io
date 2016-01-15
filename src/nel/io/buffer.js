@@ -221,7 +221,7 @@ export default class CBuffer {
      * @param {boolean} [littleEndian=false]
      */
     setSint32( byteOffset, value, littleEndian ) {
-        this.data_view.setFloat32(byteOffset, value, littleEndian);
+        this.data_view.setInt32(byteOffset, value, littleEndian);
     }
 
     /**

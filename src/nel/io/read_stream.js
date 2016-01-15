@@ -1,13 +1,45 @@
 import { MAX_SINGLE_BYTE_VERSION, VersionError } from "nel/io/stream";
 
-class UINT8 {
-    static read( stream ) {
+export class CheckVersion {
+    static readFrom( stream, config ) {
+        return stream.readCheckVersion(config.value);
+    }
+}
+
+export class CheckChars {
+    static readFrom( stream, config ) {
+        return stream.readCheckChars(config.value);
+    }
+}
+
+export class uint8 {
+    static readFrom( stream ) {
         return stream.readUint8();
     }
 }
 
-const Types = {
-    "uint8" : UINT8
+export class uint16 {
+    static readFrom( stream ) {
+        return stream.readUint16();
+    }
+}
+
+export class sint16 {
+    static readFrom( stream ) {
+        return stream.readSint16();
+    }
+}
+
+export class sint32 {
+    static readFrom( stream ) {
+        return stream.readSint32();
+    }
+}
+
+export class float {
+    static readFrom( stream ) {
+        return stream.readFloat();
+    }
 }
 
 /**
@@ -22,20 +54,36 @@ export default class CReadStream {
         this.buffer = buffer;
         this.pos = 0;
         this.littleEndian = true;
-        this.types = Types;
     }
 
     /**
      * @param {nlio.IReadable} readable
      */
     read( readable ) {
-        readable.readFrom(this);
+        return readable.readFrom(this);
     }
 
-    readType( type_name ) {
-        var type = this.types[type_name];
+    readModel( Type ) {
+        var fields = Type.fields;
+        var data = fields
+            .map(field => {
+                var type = field.type;
+                var name = field.name;
+                console.assert(type, "Type should exist" + JSON.stringify(field));
+                console.assert(type.readFrom, "Type have readFrom method" + JSON.stringify(field));
+                var value = type.readFrom(this, field);
 
-        return type.read(this);
+                return { name, value };
+            })
+            .filter(entry => entry.name)
+            .reduce(( data, entry ) => {
+                data[ entry.name ] = entry.value;
+
+                return data;
+            }, {})
+        ;
+
+        return Type.create(data);
     }
 
     readUint8() {
@@ -69,6 +117,13 @@ export default class CReadStream {
 
     readSint32() {
         var value = this.buffer.getSint32(this.pos, this.littleEndian);
+        this.pos += 4;
+
+        return value;
+    }
+
+    readFloat() {
+        var value = this.buffer.getFloat(this.pos, this.littleEndian);
         this.pos += 4;
 
         return value;

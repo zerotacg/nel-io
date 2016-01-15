@@ -54,6 +54,16 @@ describe("nel.io.CReadStream", function () {
         });
     });
 
+    describe("#readModel()", function () {
+        it("should read all fields in order", function () {
+            var fields = [
+                { type: "version", value: 4 },
+                { type: "check-chars", value: "ZONE" },
+                { type: "uint16", name: "zone_id" }
+            ];
+        });
+    });
+
     describe("#readType()", function () {
         it("should read a uint8", function () {
             var type_name = "uint8";
